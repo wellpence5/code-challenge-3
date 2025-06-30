@@ -1,37 +1,25 @@
-// ===== GLOBALS (not ideal but works) =====
-let allPosts = []; // Storing posts in global var (redundant with API calls)
+//GLOBALS (not ideal but works)
+let allPosts = [];
 const API_URL = "http://localhost:3000/posts";
 
-// ===== MAIN FUNCTION (runs on load) =====
+// MAIN FUNCTION (runs on load)
 function main() {
   loadPosts(); // First load
-  loadPostsAgain(); // Oops, duplicate fetch!
   setupForm();
-  setupFormAgain(); // Duplicate listener (bad!)
 }
 
-// ===== FETCH POSTS (redundant version) =====
+//FETCH POSTS
 function loadPosts() {
   fetch(API_URL)
     .then(res => res.json())
     .then(posts => {
-      allPosts = posts; // Storing globally (unnecessary)
+      allPosts = posts;
       renderPosts(posts);
     })
-    .catch(err => console.log("Error (1st fetch):", err));
 }
 
-// Duplicate fetch (just for demo redundancy)
-function loadPostsAgain() {
-  fetch(API_URL)
-    .then(res => res.json())
-    .then(posts => {
-      renderPosts(posts); // Re-rendering same data
-    })
-    .catch(err => console.log("Error (2nd fetch):", err));
-}
 
-// ===== RENDER POSTS (verbose version) =====
+// RENDER POSTS
 function renderPosts(posts) {
   const container = document.getElementById("posts-container");
   container.innerHTML = ""; // Clear old posts
@@ -54,7 +42,7 @@ function renderPosts(posts) {
   });
 }
 
-// ===== SHOW POST DETAILS (over-fetching) =====
+//SHOW POST DETAILS
 function showPostDetails(postId) {
   // Fetching single post (even though we already have allPosts)
   fetch(`${API_URL}/${postId}`)

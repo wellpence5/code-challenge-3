@@ -1,16 +1,22 @@
 {
   "posts": [
     {
-      "id": 1,
-      "title": "First Post",
+      "id": "1",
+      "title": "Test Post",
       "content": "This is my first blog post!",
-      "author": "John Doe"
+      "author": "Rutomustgo"
     },
     {
-      "id": 2,
-      "title": "Second Post",
+      "id": "2",
+      "title": "Another test Post",
       "content": "Another post here.",
-      "author": "Jane Smith"
+      "author": "Alvinforpreso"
+    },
+    {
+      "id": "776b",
+      "title": "454tg54tgtg",
+      "content": "rfffrfr",
+      "author": "rrffrf"
     }
   ]
 }

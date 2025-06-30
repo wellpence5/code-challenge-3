@@ -42,11 +42,6 @@ header h1 {
   transition: transform 0.2s;
 }
 
-.post-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
-
 #post-detail {
   background: #f9f9f9;
 }

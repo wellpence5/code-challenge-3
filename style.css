@@ -1,87 +1,136 @@
 body {
   font-family: Arial, sans-serif;
-  line-height: 1.6;
-  margin: 0;
-  padding: 20px;
-  background: #f4f4f4;
+  line-height: 1.6;             
+  margin: 0;                      
+  padding: 20px;              
+  background: #f4f4f4;          
 }
 
+/* 
+ * Container for all content 
+ * Centers content on the page and adds visual separation
+ */
 .container {
-  max-width: 1000px;
-  margin: 0 auto;
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;       
+  margin: 0 auto;               
+  background: #fff;             
+  padding: 20px;                
+  border-radius: 8px;           
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
 }
 
-header h1 {
-  text-align: center;
-  color: #333;
+/* 
+ * Utility class for hiding elements 
+ * Uses !important to ensure it overrides other display properties
+ */
+.hidden {
+  display: none !important;
 }
 
-#post-list, #post-detail, #new-post-form {
-  margin-bottom: 30px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
+/* 
+ * Styles for the posts container 
+ * Creates a responsive grid layout for post cards
+ */
 #posts-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 15px;
+  display: grid;                  /* Use CSS Grid */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive columns */
+  gap: 15px;                      /* Space between cards */
+  margin-top: 15px;               /* Space from the heading */
 }
 
+/* 
+ * Styles for individual post cards 
+ * Creates visual cards for each post
+ */
 .post-card {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 15px;
-  cursor: pointer;
-  transition: transform 0.2s;
+  background: #fff;               /* White background */
+  border: 1px solid #ddd;         /* Light border */
+  border-radius: 5px;             /* Slightly rounded corners */
+  padding: 15px;                  /* Inner spacing */
+  cursor: pointer;                /* Changes cursor to indicate clickable */
+  transition: transform 0.2s;     /* Smooth hover animation */
 }
 
+/* 
+ * Hover effect for post cards 
+ * Lifts card slightly and adds shadow
+ */
+.post-card:hover {
+  transform: translateY(-3px);    /* Moves card up slightly */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);  /* Adds shadow */
+}
+
+/* 
+ * Styles for the post detail section 
+ * Creates a distinct area for detailed post view
+ */
 #post-detail {
-  background: #f9f9f9;
+  background: #f9f9f9;            /* Light gray background */
+  padding: 20px;                  /* Inner spacing */
+  border-radius: 5px;             /* Rounded corners */
+  margin: 20px 0;                 /* Vertical spacing */
 }
 
+/* 
+ * Styles for the delete button 
+ * Makes it stand out as a dangerous action
+ */
+#delete-button {
+  background: #ff4444;            /* Red background */
+  color: white;                   /* White text */
+  border: none;                   /* No border */
+  padding: 8px 16px;              /* Comfortable size */
+  border-radius: 4px;             /* Slightly rounded */
+  cursor: pointer;                /* Indicates clickable */
+  margin-top: 10px;               /* Space from content */
+}
+
+/* 
+ * Hover effect for delete button 
+ * Darkens the red to indicate interaction
+ */
+#delete-button:hover {
+  background: #cc0000;            /* Darker red */
+}
+
+/* 
+ * Styles for the new post form 
+ * Creates a clean, organized form layout
+ */
 #post-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: flex;                  /* Flexbox layout */
+  flex-direction: column;         /* Stack elements vertically */
+  gap: 10px;                     /* Space between form elements */
 }
 
+/* 
+ * Styles for form inputs and textarea 
+ * Consistent styling for all input fields
+ */
 #post-form input,
 #post-form textarea {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 10px;                  /* Comfortable inner spacing */
+  border: 1px solid #ddd;         /* Light border */
+  border-radius: 4px;             /* Slightly rounded */
 }
 
+/* 
+ * Styles for the form submit button 
+ * Makes it stand out as the primary action
+ */
 #post-form button {
-  padding: 10px;
-  background: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  padding: 10px;                  /* Comfortable size */
+  background: #4CAF50;            /* Green background */
+  color: white;                   /* White text */
+  border: none;                   /* No border */
+  border-radius: 4px;             /* Slightly rounded */
+  cursor: pointer;                /* Indicates clickable */
 }
 
+/* 
+ * Hover effect for submit button 
+ * Darkens the green to indicate interaction
+ */
 #post-form button:hover {
-  background: #45a049;
-}
-
-#delete-button {
-  background: #ff4444;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-#delete-button:hover {
-  background: #cc0000;
+  background: #45a049;            /* Darker green */
 }

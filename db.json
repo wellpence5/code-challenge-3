@@ -1,12 +1,6 @@
 {
   "posts": [
     {
-      "id": "1",
-      "title": "Test Post",
-      "content": "This is my first blog post!",
-      "author": "Rutomustgo"
-    },
-    {
       "id": "2",
       "title": "Another test Post",
       "content": "Another post here.",

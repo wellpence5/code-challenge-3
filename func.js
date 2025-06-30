@@ -3,27 +3,33 @@ const API_URL = "http://localhost:3000/posts";
 
 // DOM Elements
 const postsContainer = document.getElementById("posts-container");
-const postDetail = document.getElementById("post-content");
+const postDetailSection = document.getElementById("post-content");
 const postForm = document.getElementById("post-form");
+const deleteButton = document.getElementById("delete-button");
 
-// Main Function (Runs on DOM Load)
-function main() {
-  displayPosts();
-  addNewPostListener();
+// State
+let currentPostId = null;
+
+// Initialize the application
+function init() {
+  fetchPosts();
+  setupEventListeners();
 }
 
-// Fetch & Display All Posts
-async function displayPosts() {
+// Fetch all posts from API
+async function fetchPosts() {
   try {
     const response = await fetch(API_URL);
+    if (!response.ok) throw new Error("Failed to fetch posts");
     const posts = await response.json();
     renderPosts(posts);
   } catch (error) {
     console.error("Error fetching posts:", error);
+    alert("Failed to load posts. Please try again later.");
   }
 }
 
-// Render Posts in the UI
+// Render posts in the UI
 function renderPosts(posts) {
   postsContainer.innerHTML = "";
   posts.forEach(post => {
@@ -33,51 +39,91 @@ function renderPosts(posts) {
       <h3>${post.title}</h3>
       <p><em>By ${post.author}</em></p>
     `;
-    postCard.addEventListener("click", () => handlePostClick(post.id));
+    postCard.addEventListener("click", () => showPostDetails(post.id));
     postsContainer.appendChild(postCard);
   });
 }
 
-// Handle Post Click (Show Details)
-async function handlePostClick(postId) {
+// Show detailed view of a post
+async function showPostDetails(postId) {
   try {
     const response = await fetch(`${API_URL}/${postId}`);
+    if (!response.ok) throw new Error("Failed to fetch post details");
+    
     const post = await response.json();
-    postDetail.innerHTML = `
+    currentPostId = post.id;
+    
+    postDetailSection.innerHTML = `
       <h3>${post.title}</h3>
       <p>${post.content}</p>
       <p><strong>Author:</strong> ${post.author}</p>
+      <button id="delete-button">Delete Post</button>
     `;
+    
+    // Add event listener to the newly created delete button
+    document.getElementById("delete-button").addEventListener("click", handleDeletePost);
   } catch (error) {
     console.error("Error fetching post details:", error);
+    alert("Failed to load post details. Please try again.");
   }
 }
 
-// Add New Post Listener
-function addNewPostListener() {
-  postForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+// Handle post deletion
+async function handleDeletePost() {
+  if (!currentPostId) return;
+  
+  if (!confirm("Are you sure you want to delete this post?")) return;
+  
+  try {
+    const response = await fetch(`${API_URL}/${currentPostId}`, {
+      method: "DELETE"
+    });
     
-    const title = document.getElementById("post-title").value;
-    const content = document.getElementById("post-content-input").value;
-    const author = document.getElementById("post-author").value;
-
-    const newPost = { title, content, author };
-
-    try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newPost),
-      });
-      const post = await response.json();
-      displayPosts(); // Refresh the list
-      postForm.reset(); // Clear form
-    } catch (error) {
-      console.error("Error creating post:", error);
-    }
-  });
+    if (!response.ok) throw new Error("Failed to delete post");
+    
+    postDetailSection.innerHTML = "";
+    currentPostId = null;
+    fetchPosts(); // Refresh the post list
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    alert("Failed to delete post. Please try again.");
+  }
 }
 
-// Initialize App When DOM Loads
-document.addEventListener("DOMContentLoaded", main);
+// Handle new post submission
+async function handleFormSubmit(event) {
+  event.preventDefault();
+  
+  const title = document.getElementById("post-title").value;
+  const content = document.getElementById("post-content-input").value;
+  const author = document.getElementById("post-author").value;
+
+  if (!title || !content || !author) {
+    alert("Please fill in all fields");
+    return;
+  }
+
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, content, author })
+    });
+    
+    if (!response.ok) throw new Error("Failed to create post");
+    
+    postForm.reset();
+    fetchPosts(); // Refresh the post list
+  } catch (error) {
+    console.error("Error creating post:", error);
+    alert("Failed to create post. Please try again.");
+  }
+}
+
+// Set up all event listeners
+function setupEventListeners() {
+  postForm.addEventListener("submit", handleFormSubmit);
+}
+
+// Initialize the application when DOM is loaded
+document.addEventListener("DOMContentLoaded", init);

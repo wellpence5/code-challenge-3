@@ -1,45 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Basic meta tags for character set and responsive viewport -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog Post Manager</title>
+  <!-- Link to external CSS file -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Main container for all content -->
   <div class="container">
+    <!-- Header section with page title -->
     <header>
       <h1>Blog Posts</h1>
     </header>
 
+    <!-- Main content area -->
     <main>
-      <!-- Post List Section -->
+      <!-- Section for displaying all posts in a list -->
       <section id="post-list">
         <h2>All Posts</h2>
+        <!-- Container where post cards will be dynamically inserted -->
         <div id="posts-container"></div>
       </section>
 
-      <!-- Post Detail Section -->
-      <section id="post-detail">
+      <!-- Section for showing detailed view of a single post -->
+      <!-- Starts hidden and only shows when a post is selected -->
+      <section id="post-detail" class="hidden">
         <h2>Post Details</h2>
         <div id="post-content">
-          <p>Select a post to view details.</p>
+          <!-- Elements that will be populated when a post is selected -->
+          <h3 id="detail-title"></h3>
+          <p id="detail-content"></p>
+          <p id="detail-author"></p>
+          <!-- Delete button for the currently viewed post -->
+          <button id="delete-button">Delete Post</button>
         </div>
       </section>
 
-      <!-- New Post Form -->
+      <!-- Form section for adding new posts -->
       <section id="new-post-form">
         <h2>Add New Post</h2>
         <form id="post-form">
+          <!-- Input fields for new post data -->
           <input type="text" id="post-title" placeholder="Title" required>
           <textarea id="post-content-input" placeholder="Content" required></textarea>
           <input type="text" id="post-author" placeholder="Author" required>
+          <!-- Submit button -->
           <button type="submit">Create Post</button>
         </form>
       </section>
     </main>
   </div>
 
+  <!-- Link to external JavaScript file -->
   <script src="func.js"></script>
 </body>
 </html>

@@ -5,7 +5,6 @@ const API_URL = "http://localhost:3000/posts";
 const postsContainer = document.getElementById("posts-container");
 const postDetailSection = document.getElementById("post-content");
 const postForm = document.getElementById("post-form");
-const deleteButton = document.getElementById("delete-button");
 
 // State
 let currentPostId = null;

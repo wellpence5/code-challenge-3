@@ -17,8 +17,6 @@ function loadPosts() {
       renderPosts(posts);
     })
 }
-
-
 // RENDER POSTS
 function renderPosts(posts) {
   const container = document.getElementById("posts-container");
@@ -44,7 +42,6 @@ function renderPosts(posts) {
 
 //SHOW POST DETAILS
 function showPostDetails(postId) {
-  // Fetching single post (even though we already have allPosts)
   fetch(`${API_URL}/${postId}`)
     .then(res => res.json())
     .then(post => {
@@ -56,7 +53,7 @@ function showPostDetails(postId) {
     .catch(err => console.log("Error fetching post:", err));
 }
 
-// ===== FORM HANDLING (redundant listeners) =====
+//FORM HANDLING
 function setupForm() {
   document.getElementById("new-post-form").addEventListener("submit", function(e) {
     e.preventDefault();
@@ -64,33 +61,22 @@ function setupForm() {
   });
 }
 
-// Duplicate listener (accidentally added)
-function setupFormAgain() {
-  document.getElementById("new-post-form").addEventListener("submit", function(e) {
-    e.preventDefault();
-    addNewPost(); // Same function called twice!
-  });
-}
-
-// ===== ADD NEW POST (manual DOM update + fetch) =====
+// ADD NEW POST
 function addNewPost() {
   const title = document.getElementById("title-input").value;
   const content = document.getElementById("content-input").value;
   const author = document.getElementById("author-input").value;
   
-  // Hardcoded new post ID (bad practice!)
   const newPost = { 
-    id: allPosts.length + 1, // Risky! Should let server generate ID
+    id: allPosts.length + 1, 
     title, 
     content, 
     author 
   };
   
-  // Updating UI first (optimistic update)
-  allPosts.push(newPost); // Mutating global array
+  allPosts.push(newPost);
   renderPosts(allPosts);
   
-  // Then sending to server (could fail)
   fetch(API_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -100,9 +86,9 @@ function addNewPost() {
   .then(data => console.log("Success:", data))
   .catch(err => console.log("Error saving:", err));
   
-  // Clearing form (but not checking if POST succeeded)
+  // Clearing form
   document.getElementById("new-post-form").reset();
 }
 
-// ===== START APP =====
+//START APP
 document.addEventListener("DOMContentLoaded", main);

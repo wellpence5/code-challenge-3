@@ -1,94 +1,83 @@
-//GLOBALS (not ideal but works)
-let allPosts = [];
+// API Base URL
 const API_URL = "http://localhost:3000/posts";
 
-// MAIN FUNCTION (runs on load)
+// DOM Elements
+const postsContainer = document.getElementById("posts-container");
+const postDetail = document.getElementById("post-content");
+const postForm = document.getElementById("post-form");
+
+// Main Function (Runs on DOM Load)
 function main() {
-  loadPosts(); // First load
-  setupForm();
+  displayPosts();
+  addNewPostListener();
 }
 
-//FETCH POSTS
-function loadPosts() {
-  fetch(API_URL)
-    .then(res => res.json())
-    .then(posts => {
-      allPosts = posts;
-      renderPosts(posts);
-    })
+// Fetch & Display All Posts
+async function displayPosts() {
+  try {
+    const response = await fetch(API_URL);
+    const posts = await response.json();
+    renderPosts(posts);
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+  }
 }
-// RENDER POSTS
+
+// Render Posts in the UI
 function renderPosts(posts) {
-  const container = document.getElementById("posts-container");
-  container.innerHTML = ""; // Clear old posts
-  
-  // Looping with forEach + index (could use map)
-  posts.forEach((post, index) => {
-    const card = document.createElement("div");
-    card.className = "post-card";
-    card.innerHTML = `
+  postsContainer.innerHTML = "";
+  posts.forEach(post => {
+    const postCard = document.createElement("div");
+    postCard.className = "post-card";
+    postCard.innerHTML = `
       <h3>${post.title}</h3>
       <p><em>By ${post.author}</em></p>
     `;
-    
-    // Adding click listener (inline function)
-    card.addEventListener("click", function() {
-      showPostDetails(post.id);
-    });
-    
-    container.appendChild(card);
+    postCard.addEventListener("click", () => handlePostClick(post.id));
+    postsContainer.appendChild(postCard);
   });
 }
 
-//SHOW POST DETAILS
-function showPostDetails(postId) {
-  fetch(`${API_URL}/${postId}`)
-    .then(res => res.json())
-    .then(post => {
-      document.getElementById("detail-title").textContent = post.title;
-      document.getElementById("detail-content").textContent = post.content;
-      document.getElementById("detail-author").textContent = `By ${post.author}`;
-      document.getElementById("post-detail").style.display = "block";
-    })
-    .catch(err => console.log("Error fetching post:", err));
+// Handle Post Click (Show Details)
+async function handlePostClick(postId) {
+  try {
+    const response = await fetch(`${API_URL}/${postId}`);
+    const post = await response.json();
+    postDetail.innerHTML = `
+      <h3>${post.title}</h3>
+      <p>${post.content}</p>
+      <p><strong>Author:</strong> ${post.author}</p>
+    `;
+  } catch (error) {
+    console.error("Error fetching post details:", error);
+  }
 }
 
-//FORM HANDLING
-function setupForm() {
-  document.getElementById("new-post-form").addEventListener("submit", function(e) {
+// Add New Post Listener
+function addNewPostListener() {
+  postForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    addNewPost();
+    
+    const title = document.getElementById("post-title").value;
+    const content = document.getElementById("post-content-input").value;
+    const author = document.getElementById("post-author").value;
+
+    const newPost = { title, content, author };
+
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newPost),
+      });
+      const post = await response.json();
+      displayPosts(); // Refresh the list
+      postForm.reset(); // Clear form
+    } catch (error) {
+      console.error("Error creating post:", error);
+    }
   });
 }
 
-// ADD NEW POST
-function addNewPost() {
-  const title = document.getElementById("title-input").value;
-  const content = document.getElementById("content-input").value;
-  const author = document.getElementById("author-input").value;
-  
-  const newPost = { 
-    id: allPosts.length + 1, 
-    title, 
-    content, 
-    author 
-  };
-  
-  allPosts.push(newPost);
-  renderPosts(allPosts);
-  
-  fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(newPost),
-  })
-  .then(res => res.json())
-  .then(data => console.log("Success:", data))
-  .catch(err => console.log("Error saving:", err));
-  
-  // Clearing form
-  document.getElementById("new-post-form").reset();
-}
-
-//START APP
+// Initialize App When DOM Loads
 document.addEventListener("DOMContentLoaded", main);

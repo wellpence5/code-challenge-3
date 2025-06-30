@@ -2,29 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Blog Posts (Junior Dev Version)</title>
-  <script src="./func.js"></script>
-  <link rel="stylesheet" href="./style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Post Manager</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Blog Posts</h1>
-  
-  <!-- Post List -->
-  <div id="posts-container"></div>
-  
-  <!-- Post Detail -->
-  <div id="post-detail" style="display: none;">
-    <h2 id="detail-title"></h2>
-    <p id="detail-content"></p>
-    <p id="detail-author"></p>
+  <div class="container">
+    <header>
+      <h1>Blog Posts</h1>
+    </header>
+
+    <main>
+      <!-- Post List Section -->
+      <section id="post-list">
+        <h2>All Posts</h2>
+        <div id="posts-container"></div>
+      </section>
+
+      <!-- Post Detail Section -->
+      <section id="post-detail">
+        <h2>Post Details</h2>
+        <div id="post-content">
+          <p>Select a post to view details.</p>
+        </div>
+      </section>
+
+      <!-- New Post Form -->
+      <section id="new-post-form">
+        <h2>Add New Post</h2>
+        <form id="post-form">
+          <input type="text" id="post-title" placeholder="Title" required>
+          <textarea id="post-content-input" placeholder="Content" required></textarea>
+          <input type="text" id="post-author" placeholder="Author" required>
+          <button type="submit">Create Post</button>
+        </form>
+      </section>
+    </main>
   </div>
-  
-  <!-- New Post Form -->
-  <form id="new-post-form">
-    <input type="text" id="title-input" placeholder="Title">
-    <textarea id="content-input" placeholder="Content"></textarea>
-    <input type="text" id="author-input" placeholder="Author">
-    <button type="submit">Add Post</button>
-  </form>
+
+  <script src="app.js"></script>
 </body>
 </html>
